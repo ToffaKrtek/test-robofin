@@ -1,0 +1,50 @@
+version: '3.1'
+
+services:
+
+  # В билде php только установка PDO_mysql
+  php:
+    build:
+      ./php
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+
+# В контейнере MySQL в environment не объявленно MYSQL_DATABASE из-за того, что были ошибки при инициализации (ENTRYPOINT не всегда вызывался после создания БД -> пошел по легчайшему пути)
+  mysqldb:
+    image: mysql
+    restart: always
+    # ---------------------------------------------------------------------
+    # Очень хотелось заполнять БД в процессе инициализации
+    # Но докер очень не хотел читать файлы с данными -> пусть и нагружено слихвой, но работает
+    volumes:
+      - ./mysql/mysql-config:/etc/mysql/conf.d
+      - ./mysql/db:/var/lib/mysql
+      - ./mysql/pull-data:/var/lib/mysql-files:rw
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:rw
+  # На всякий случай стоит выдать все права для всех на файлах инициализации
+    # ---------------------------------------------------------------------
+    # БД создается в entrypoint'е (наверное, правильнее всеже в environment:MYSQL_DATABASE было прописать,
+    # но пока решал проблему с импортом данных использовал данный вариант - его и оставил)
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "127.0.0.1:3600:3306"
+    command: --default-authentication-plugin=mysql_native_password --local-infile=1
+
+
+# Данный контейнер можно удалить -- СУБД (http://localhost:8090)
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8090:8080
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
