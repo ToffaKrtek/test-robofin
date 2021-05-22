@@ -27,6 +27,8 @@ services:
       - ./mysql/db:/var/lib/mysql
       - ./mysql/pull-data:/var/lib/mysql-files:rw
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:rw
+      
+  # При выполнении 2-го файла entrypoint'а выдаст Warning о том, что неизвестная переменная loose-local-infile, однако это бред
   # На всякий случай стоит выдать все права для всех на файлах инициализации
     # ---------------------------------------------------------------------
     # БД создается в entrypoint'е (наверное, правильнее всеже в environment:MYSQL_DATABASE было прописать,
