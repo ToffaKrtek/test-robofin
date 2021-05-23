@@ -10,7 +10,7 @@
     <tbody>
     <?php foreach( $staff as $user):?>
         <tr>
-        <th scope="row"><?= $user['last_name'] . ' '. $user['middle_name'] . ' ' . $user['first_name'];?></th>
+        <th scope="row"><?= $user['last_name'] . ' '. $user['first_name'] . ' ' .$user['middle_name'];?></th>
         <td><?= date('d.m.Y', strtotime($user['created_at']));?></td>
         </tr>
     <?php endforeach;?>

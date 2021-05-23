@@ -4,14 +4,17 @@
     <thead>
         <tr>
         <th scope="col">Сотрудник</th>
-        <th scope="col">Принят на работу</th>
+        <th scope="col">Дата увольнения</th>
+        <th scope="col">Причина увольнения</th>
         </tr>
     </thead>
     <tbody>
     <?php foreach( $staff as $user):?>
         <tr>
-        <th scope="row"><?= $user['last_name'] . ' '. $user['middle_name'] . ' ' . $user['first_name'];?></th>
+        <th scope="row"><?= $user['last_name'] . ' '. $user['first_name'] . ' ' .$user['middle_name'];?></th>
         <td><?= date('d.m.Y', strtotime($user['created_at']));?></td>
+        <td><?= $user['description'];?></td>
+        
         </tr>
     <?php endforeach;?>
     </tbody>
