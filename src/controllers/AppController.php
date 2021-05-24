@@ -38,13 +38,13 @@ include_once(ROOT.'/components/Pagination.php');
                         $pagination = new Pagination($page, $perpage, $total[0]);  
                         require_once(ROOT.'/views/probation.php');
                         return true;
-                    // case 'show_chiefs':
-                    //     $title = 'Список последних нанятых сотрудников в каждом отделе';
-                    //     $total = $app->countStaff($list_type);
-                    //     $staff = $app->getChiefs($offset, $perpage);
-                    //     $pagination = new Pagination($page, $perpage, $total[0]);  
-                    //     require_once(ROOT.'/views/probation.php');
-                    //     return true;
+                    case 'show_chiefs':
+                        $title = 'Список последних нанятых сотрудников в каждом отделе';
+                        $total = $app->countStaff($list_type);
+                        $staff = $app->getChiefs($offset, $perpage);
+                        $pagination = new Pagination($page, $perpage, $total[0]);  
+                        require_once(ROOT.'/views/chief.php');
+                        return true;
                     default:
                         $title = 'Список сотрудников';
                         $total = $app->countStaff($list_type);
